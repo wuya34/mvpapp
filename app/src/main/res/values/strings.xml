@@ -4,4 +4,11 @@
     <string name="nav_header_title">TO-DOs</string>
     <string name="nav_menu_1">TO-DO List</string>
     <string name="nav_menu_2">Statistics</string>
+    <string name="filtering_all_task">ALL TO-DOs</string>
+    <string name="filtering_active_task">Active TO-DOs</string>
+    <string name="filtering_complete_task">Completed TO-DOs</string>
+    <string name="no_task">You Have no TO-DOs</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_clear_completed">Clear completed</string>
+    <string name="menu_refresh">Refresh</string>
 </resources>

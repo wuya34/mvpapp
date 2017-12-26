@@ -1,6 +1,10 @@
 package com.example.amyas.mvpapp.activity.task;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -10,7 +14,8 @@ import android.widget.FrameLayout;
 
 import com.example.amyas.mvpapp.R;
 import com.example.amyas.mvpapp.base.BaseActivity;
-import com.orhanobut.logger.Logger;
+import com.example.amyas.mvpapp.fragment.TaskFragment;
+import com.example.amyas.mvpapp.util.ActivityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,10 +24,14 @@ public class TaskActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.task_container)
-    FrameLayout mTaskContainer;
+    @BindView(R.id.fragment_container)
+    FrameLayout mFragmentContainer;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.coordinator)
+    CoordinatorLayout mCoordinator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +39,13 @@ public class TaskActivity extends BaseActivity {
         setContentView(R.layout.activity_task);
         ButterKnife.bind(this);
         configToolbar();
-
+        setNavigationView();
+        TaskFragment taskFragment =
+                (TaskFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (taskFragment==null){
+            taskFragment = TaskFragment.newInstance();
+            ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),taskFragment, R.id.fragment_container);
+        }
     }
 
     private void configToolbar() {
@@ -46,11 +61,28 @@ public class TaskActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Logger.d("debug");
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setNavigationView() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_menu_1:
+                        Snackbar.make(mCoordinator, "task list", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case R.id.nav_menu_2:
+                        Snackbar.make(mCoordinator, "statistics", Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
     }
 }
