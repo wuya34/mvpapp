@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">mvpapp</string>
+    <string name="toolbar_title">TO-DO-MVP</string>
+    <string name="nav_header_title">TO-DOs</string>
+    <string name="nav_menu_1">TO-DO List</string>
+    <string name="nav_menu_2">Statistics</string>
+</resources>
