@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.amyas.mvpapp.MyApplication;
 import com.example.amyas.mvpapp.R;
+import com.example.amyas.mvpapp.activity.presenter.contract.TaskContract;
 import com.example.amyas.mvpapp.activity.task.AddEditTaskActivity;
 import com.example.amyas.mvpapp.base.BaseFragment;
 import com.example.amyas.mvpapp.bean.TaskBean;
@@ -29,13 +30,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.objectbox.BoxStore;
 
 /**
  * author: Amyas
  * date: 2017/12/26
  */
 
-public class TaskFragment extends BaseFragment {
+public class TaskFragment extends BaseFragment implements TaskContract.view{
 
     @BindView(R.id.filtering_label)
     TextView mFilteringLabel;
@@ -47,8 +49,17 @@ public class TaskFragment extends BaseFragment {
     @BindView(R.id.list_view)
     ListView mListView;
 
+    private TaskContract.Presenter mPresenter;
+    private BoxStore mBoxStore;
+
     public static TaskFragment newInstance() {
         return new TaskFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBoxStore = ((MyApplication)getActivity().getApplication()).getBoxStore();
     }
 
     @Nullable
@@ -58,12 +69,9 @@ public class TaskFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, root);
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddEditTaskActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddEditTaskActivity.class);
+            startActivity(intent);
         });
         mRefreshLayout.setColorSchemeColors(
                 getActivity().getResources().getColor(R.color.colorPrimary),
@@ -71,15 +79,17 @@ public class TaskFragment extends BaseFragment {
                 getActivity().getResources().getColor(R.color.colorPrimaryDark)
         );
         mRefreshLayout.setScrollView(mListView);
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Snackbar.make(getView(), "refreshing", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(()->
+                Snackbar.make(getView(), "refreshing", Snackbar.LENGTH_SHORT).show());
         setHasOptionsMenu(true);
         return root;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
@@ -108,6 +118,27 @@ public class TaskFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void setPresenter(TaskContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean active) {
+        if (getView()==null){
+            return;
+        }
+        mRefreshLayout.post(()->mRefreshLayout.setRefreshing(true));
+    }
+
+    @Override
+    public BoxStore getBoxStore() {
+        if (mBoxStore==null){
+            mBoxStore = ((MyApplication)getActivity().getApplication()).getBoxStore();
+        }
+        return mBoxStore;
     }
 
     private static class TaskAdapter extends BaseAdapter{
@@ -157,4 +188,6 @@ public class TaskFragment extends BaseFragment {
             return root;
         }
     }
+
+
 }

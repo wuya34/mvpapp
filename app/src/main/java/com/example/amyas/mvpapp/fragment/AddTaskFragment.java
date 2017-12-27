@@ -55,7 +55,7 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
             @Override
             public void onClick(View v) {
                 mPresenter.saveTaskBean(mAddTaskTitle.getText().toString(),
-                        mAddTaskDescription.getText().toString(), mBoxStore);
+                        mAddTaskDescription.getText().toString());
             }
         });
 
@@ -89,6 +89,14 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
     @Override
     public void showEmptyTaskError() {
         Snackbar.make(getView(), "TO DOs cannot be empty", Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public BoxStore getBoxStore() {
+        if (mBoxStore==null){
+            mBoxStore = ((MyApplication)getActivity().getApplication()).getBoxStore();
+        }
+        return mBoxStore;
     }
 
 }

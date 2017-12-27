@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.amyas.mvpapp.R;
+import com.example.amyas.mvpapp.activity.presenter.TaskPresenter;
 import com.example.amyas.mvpapp.base.BaseActivity;
 import com.example.amyas.mvpapp.fragment.TaskFragment;
 import com.example.amyas.mvpapp.util.ActivityUtil;
@@ -48,6 +49,8 @@ public class TaskActivity extends BaseActivity {
             taskFragment = TaskFragment.newInstance();
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),taskFragment, R.id.fragment_container);
         }
+
+        new TaskPresenter(taskFragment);
     }
 
     private void configToolbar() {

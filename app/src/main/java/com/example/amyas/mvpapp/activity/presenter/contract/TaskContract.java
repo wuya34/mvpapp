@@ -10,17 +10,18 @@ import io.objectbox.BoxStore;
  * date: 2017/12/27
  */
 
-public interface AddEditTaskContract {
-    interface view extends BaseView<Presenter>{
-        void showSavedTaskBean();
-        void showEmptyTaskError();
-        BoxStore getBoxStore();
+public interface TaskContract {
 
+    interface view extends BaseView<Presenter>{
+
+        void showLoadingIndicator(boolean active);
+        BoxStore getBoxStore();
 
     }
 
     interface Presenter extends BasePresenter{
-        void saveTaskBean(String title, String description);
+        void loadTask(boolean forceUpdate);
+        void loadTask(boolean forceUpdate, boolean showLoadingUi);
 
     }
 }

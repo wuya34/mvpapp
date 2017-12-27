@@ -27,12 +27,12 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
     }
 
     @Override
-    public void saveTaskBean(String title, String description, BoxStore boxStore) {
+    public void saveTaskBean(String title, String description) {
         TaskBean taskBean = new TaskBean(title, description);
         if (taskBean.isEmpty()){
             mFragment.showEmptyTaskError();
         }else {
-            Box<TaskBean> taskBeanBox = boxStore.boxFor(TaskBean.class);
+            Box<TaskBean> taskBeanBox = mFragment.getBoxStore().boxFor(TaskBean.class);
             taskBeanBox.put(taskBean);
             mFragment.showSavedTaskBean();
         }
