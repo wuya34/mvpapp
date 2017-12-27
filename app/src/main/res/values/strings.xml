@@ -11,4 +11,6 @@
     <string name="menu_filter">Filter</string>
     <string name="menu_clear_completed">Clear completed</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="add_edit_text_hint">Title</string>
+    <string name="add_edit_text_description_hint">Enter your TO-DO here</string>
 </resources>

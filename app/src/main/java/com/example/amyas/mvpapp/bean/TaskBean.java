@@ -1,5 +1,7 @@
 package com.example.amyas.mvpapp.bean;
 
+import com.example.amyas.mvpapp.util.BeanUtil;
+
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
@@ -13,19 +15,16 @@ public class TaskBean {
     private long id;
     private String title;
     private String detail;
+    private boolean completed;
+
+    public TaskBean(String title, String detail, boolean completed) {
+        this.title = title;
+        this.detail = detail;
+        this.completed = completed;
+    }
 
     public TaskBean(String title, String detail) {
-        this.title = title;
-
-        this.detail = detail;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this(title, detail, false);
     }
 
     @Override
@@ -34,7 +33,29 @@ public class TaskBean {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", detail='" + detail + '\'' +
+                ", completed=" + completed +
                 '}';
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isEmpty() {
+        return BeanUtil.isNullOrEmpty(title) &&
+                BeanUtil.isNullOrEmpty(detail);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {

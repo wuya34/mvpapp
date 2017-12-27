@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
-    tools:openDrawer="start"
-    tools:context="com.example.amyas.mvpapp.activity.task.TaskActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
-        <include layout="@layout/toolbar_base"/>
-        
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/toolbar_base"/>
+
+        </android.support.design.widget.AppBarLayout>
+
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
@@ -22,29 +22,22 @@
             <FrameLayout
                 android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+            </FrameLayout>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fabSize="normal"
-                android:layout_margin="@dimen/fab_margin"
                 app:layout_anchor="@+id/fragment_container"
-                android:src="@drawable/icon_add"
-                app:layout_anchorGravity="right|bottom|end"/>
+                android:layout_margin="@dimen/fab_margin"
+                app:layout_anchorGravity="right|bottom"/>
 
         </android.support.design.widget.CoordinatorLayout>
+
     </LinearLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        app:headerLayout="@layout/nav_header"
-        android:layout_gravity="start"
-        app:menu="@menu/task_nav"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent"/>
 
 
-</android.support.v4.widget.DrawerLayout>
+</android.support.constraint.ConstraintLayout>

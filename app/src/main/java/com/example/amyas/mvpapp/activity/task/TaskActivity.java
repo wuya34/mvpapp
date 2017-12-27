@@ -19,6 +19,7 @@ import com.example.amyas.mvpapp.util.ActivityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class TaskActivity extends BaseActivity {
 
@@ -32,12 +33,13 @@ public class TaskActivity extends BaseActivity {
     NavigationView mNavigationView;
     @BindView(R.id.coordinator)
     CoordinatorLayout mCoordinator;
+    private Unbinder mUnbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
         configToolbar();
         setNavigationView();
         TaskFragment taskFragment =
@@ -65,6 +67,12 @@ public class TaskActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 
     private void setNavigationView() {
