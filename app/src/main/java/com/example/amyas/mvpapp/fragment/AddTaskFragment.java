@@ -1,5 +1,6 @@
 package com.example.amyas.mvpapp.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.example.amyas.mvpapp.MyApplication;
 import com.example.amyas.mvpapp.R;
 import com.example.amyas.mvpapp.activity.presenter.contract.AddEditTaskContract;
+import com.example.amyas.mvpapp.base.BaseActivity;
 import com.example.amyas.mvpapp.base.BaseFragment;
 
 import butterknife.BindView;
@@ -51,13 +53,8 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
 
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_done);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.saveTaskBean(mAddTaskTitle.getText().toString(),
-                        mAddTaskDescription.getText().toString());
-            }
-        });
+        fab.setOnClickListener(v -> mPresenter.saveTaskBean(mAddTaskTitle.getText().toString(),
+                mAddTaskDescription.getText().toString()));
 
 
         unbinder = ButterKnife.bind(this, root);
@@ -83,7 +80,8 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
 
     @Override
     public void showSavedTaskBean() {
-        Snackbar.make(getView(), "task saved", Snackbar.LENGTH_LONG).show();
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     @Override

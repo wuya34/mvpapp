@@ -17,15 +17,7 @@ public class TaskBean {
     private String detail;
     private boolean completed;
 
-    public TaskBean(String title, String detail, boolean completed) {
-        this.title = title;
-        this.detail = detail;
-        this.completed = completed;
-    }
 
-    public TaskBean(String title, String detail) {
-        this(title, detail, false);
-    }
 
     @Override
     public String toString() {

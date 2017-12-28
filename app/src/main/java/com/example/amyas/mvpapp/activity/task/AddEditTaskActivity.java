@@ -1,5 +1,6 @@
 package com.example.amyas.mvpapp.activity.task;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -32,6 +33,7 @@ public class AddEditTaskActivity extends BaseActivity {
     CoordinatorLayout mCoordinator;
     Unbinder unbinder;
     private ActionBar mActionBar;
+    public static final int REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,4 +69,5 @@ public class AddEditTaskActivity extends BaseActivity {
         super.onDestroy();
         unbinder.unbind();
     }
+
 }

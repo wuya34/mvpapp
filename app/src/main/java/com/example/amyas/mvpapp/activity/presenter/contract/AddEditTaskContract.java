@@ -1,5 +1,9 @@
 package com.example.amyas.mvpapp.activity.presenter.contract;
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+
+import com.example.amyas.mvpapp.base.BaseActivity;
 import com.example.amyas.mvpapp.base.BasePresenter;
 import com.example.amyas.mvpapp.base.BaseView;
 
@@ -14,9 +18,6 @@ public interface AddEditTaskContract {
     interface view extends BaseView<Presenter>{
         void showSavedTaskBean();
         void showEmptyTaskError();
-        BoxStore getBoxStore();
-
-
     }
 
     interface Presenter extends BasePresenter{

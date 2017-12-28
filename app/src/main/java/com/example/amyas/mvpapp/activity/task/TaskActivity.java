@@ -1,7 +1,6 @@
 package com.example.amyas.mvpapp.activity.task;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -45,9 +44,9 @@ public class TaskActivity extends BaseActivity {
         setNavigationView();
         TaskFragment taskFragment =
                 (TaskFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (taskFragment==null){
+        if (taskFragment == null) {
             taskFragment = TaskFragment.newInstance();
-            ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),taskFragment, R.id.fragment_container);
+            ActivityUtil.addFragmentToActivity(getSupportFragmentManager(), taskFragment, R.id.fragment_container);
         }
 
         new TaskPresenter(taskFragment);
@@ -79,21 +78,18 @@ public class TaskActivity extends BaseActivity {
     }
 
     private void setNavigationView() {
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_menu_1:
-                        Snackbar.make(mCoordinator, "task list", Snackbar.LENGTH_LONG).show();
-                        break;
-                    case R.id.nav_menu_2:
-                        Snackbar.make(mCoordinator, "statistics", Snackbar.LENGTH_LONG).show();
-                        break;
-                }
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                return true;
+        mNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_menu_1:
+                    Snackbar.make(mCoordinator, "task list", Snackbar.LENGTH_LONG).show();
+                    break;
+                case R.id.nav_menu_2:
+                    Snackbar.make(mCoordinator, "statistics", Snackbar.LENGTH_LONG).show();
+                    break;
             }
+            item.setChecked(true);
+            mDrawerLayout.closeDrawers();
+            return true;
         });
     }
 }
