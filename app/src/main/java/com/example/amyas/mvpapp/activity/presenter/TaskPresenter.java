@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.example.amyas.mvpapp.activity.presenter.contract.TaskContract;
 import com.example.amyas.mvpapp.activity.task.AddEditTaskActivity;
+import com.example.amyas.mvpapp.activity.task.TaskDetailActivity;
 import com.example.amyas.mvpapp.base.FilteringType;
 import com.example.amyas.mvpapp.bean.TaskBean;
 import com.example.amyas.mvpapp.bean.TaskBean_;
@@ -13,6 +14,8 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.objectbox.Box;
 
 /**
  * author: Amyas
@@ -123,45 +126,57 @@ public class TaskPresenter implements TaskContract.Presenter{
 
     @Override
     public void setResultFeedback(int requestCode, int resultCode, Intent data) {
+        Logger.e("requestCode: "+ requestCode+" resultCode: "+resultCode);
         if (resultCode!= Activity.RESULT_OK){
             return;
         }
-        if (requestCode == AddEditTaskActivity.REQUEST_CODE){
-            mFragment.showTaskSaved();
+        switch (requestCode){
+            case AddEditTaskActivity.REQUEST_CODE:
+                Logger.e("AddEditTaskActivity 返回结果");
+                mFragment.showTaskSaved();
+                break;
+            case TaskDetailActivity.REQUEST_CODE:
+                Logger.e("TaskDetailActivity 返回结果");
+                mFragment.showTaskDeleted();
         }
 
     }
 
     @Override
     public void setAddTask() {
-        mFragment.addTask();
+        mFragment.startAddTaskActivity();
     }
 
     @Override
     public void completeTask(long id) {
-        TaskBean taskBean = mFragment.getBoxStore().boxFor(TaskBean.class)
-                .query()
-                .equal(TaskBean_.__ID_PROPERTY, id)
-                .build()
-                .findFirst();
-        Prediction.checkNotNull(taskBean);
-        taskBean.setCompleted(false);
-
-    }
-
-    @Override
-    public void activeTask(long id) {
-        TaskBean taskBean = mFragment.getBoxStore().boxFor(TaskBean.class)
+        Box<TaskBean> boxFor = mFragment.getBoxStore().boxFor(TaskBean.class);
+        TaskBean taskBean = boxFor
                 .query()
                 .equal(TaskBean_.__ID_PROPERTY, id)
                 .build()
                 .findFirst();
         Prediction.checkNotNull(taskBean);
         taskBean.setCompleted(true);
+        boxFor.put(taskBean);
+        loadTask(false, false);
+    }
+
+    @Override
+    public void activeTask(long id) {
+        Box<TaskBean> boxFor = mFragment.getBoxStore().boxFor(TaskBean.class);
+        TaskBean taskBean = boxFor
+                .query()
+                .equal(TaskBean_.__ID_PROPERTY, id)
+                .build()
+                .findFirst();
+        Prediction.checkNotNull(taskBean);
+        taskBean.setCompleted(false);
+        boxFor.put(taskBean);
+        loadTask(false, false);
     }
 
     @Override
     public void taskItemClick(long id) {
-
+        mFragment.startDetailActivity(id);
     }
 }

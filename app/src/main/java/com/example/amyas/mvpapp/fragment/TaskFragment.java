@@ -23,6 +23,7 @@ import com.example.amyas.mvpapp.MyApplication;
 import com.example.amyas.mvpapp.R;
 import com.example.amyas.mvpapp.activity.presenter.contract.TaskContract;
 import com.example.amyas.mvpapp.activity.task.AddEditTaskActivity;
+import com.example.amyas.mvpapp.activity.task.TaskDetailActivity;
 import com.example.amyas.mvpapp.base.BaseFragment;
 import com.example.amyas.mvpapp.base.FilteringType;
 import com.example.amyas.mvpapp.bean.TaskBean;
@@ -35,6 +36,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.objectbox.BoxStore;
+
+import static com.example.amyas.mvpapp.activity.task.TaskDetailActivity.REQUEST_CODE;
 
 /**
  * author: Amyas
@@ -253,10 +256,22 @@ public class TaskFragment extends BaseFragment implements TaskContract.view {
     }
 
     @Override
-    public void addTask() {
+    public void showTaskDeleted() {
+        Snackbar.make(getView(), "TO-DO deleted", Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startAddTaskActivity() {
         Intent intent = new Intent(getActivity(), AddEditTaskActivity.class);
         startActivityForResult(intent, AddEditTaskActivity.REQUEST_CODE);
     }
+
+    @Override
+    public void startDetailActivity(long id) {
+        Intent intent = TaskDetailActivity.newInstance(getContext(),String.valueOf(id));
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
 
     private void NoTaskHint(int drawable, String hint){
         showEmptyTask();

@@ -1,6 +1,6 @@
 package com.example.amyas.mvpapp.bean;
 
-import com.example.amyas.mvpapp.util.BeanUtil;
+import com.example.amyas.mvpapp.util.Prediction;
 
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -38,8 +38,8 @@ public class TaskBean {
     }
 
     public boolean isEmpty() {
-        return BeanUtil.isNullOrEmpty(title) &&
-                BeanUtil.isNullOrEmpty(detail);
+        return Prediction.isNullOrEmpty(title) &&
+                Prediction.isNullOrEmpty(detail);
     }
 
     public long getId() {

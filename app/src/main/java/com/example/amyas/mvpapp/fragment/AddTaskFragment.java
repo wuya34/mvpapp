@@ -35,9 +35,15 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
     Unbinder unbinder;
     private AddEditTaskContract.Presenter mPresenter;
     private BoxStore mBoxStore;
+    public static final String EXTRA_TASK_ID = "AddTaskFragment.EXTRA_TASK_ID";
+    private String taskId;
 
-    public static AddTaskFragment newInstance() {
-        return new AddTaskFragment();
+    public static AddTaskFragment newInstance(String taskId) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(EXTRA_TASK_ID, taskId);
+        AddTaskFragment fragment = new AddTaskFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -51,6 +57,7 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_add_edit_task, container, false);
 
+        taskId = getArguments().getString(EXTRA_TASK_ID);
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_done);
         fab.setOnClickListener(v -> mPresenter.saveTaskBean(mAddTaskTitle.getText().toString(),
@@ -90,11 +97,23 @@ public class AddTaskFragment extends BaseFragment implements AddEditTaskContract
     }
 
     @Override
+    public void showTaskTitle(String title) {
+        mAddTaskTitle.setText(title);
+    }
+
+    @Override
+    public void showTaskDescription(String description) {
+        mAddTaskDescription.setText(description);
+    }
+
+    @Override
     public BoxStore getBoxStore() {
         if (mBoxStore==null){
             mBoxStore = ((MyApplication)getActivity().getApplication()).getBoxStore();
         }
         return mBoxStore;
     }
+
+
 
 }

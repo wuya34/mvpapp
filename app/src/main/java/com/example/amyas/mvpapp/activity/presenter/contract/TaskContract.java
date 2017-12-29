@@ -45,7 +45,11 @@ public interface TaskContract {
 
         void showTaskSaved();
 
-        void addTask();
+        void showTaskDeleted();
+
+        void startAddTaskActivity();
+
+        void startDetailActivity(long id);
 
 
 
@@ -61,6 +65,7 @@ public interface TaskContract {
         void setResultFeedback(int requestCode, int resultCode, Intent data);
 
         void setAddTask();
+
 
         /**
          *  checkbox 取消选中时回调 更改 `TaskBean` 字段 isComplete 为false

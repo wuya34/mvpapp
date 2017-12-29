@@ -1,5 +1,6 @@
 package com.example.amyas.mvpapp.activity.task;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,18 +34,28 @@ public class AddEditTaskActivity extends BaseActivity {
     CoordinatorLayout mCoordinator;
     Unbinder unbinder;
     private ActionBar mActionBar;
-    public static final int REQUEST_CODE = 10;
+    public static final int REQUEST_CODE = 0;
+    public static final String EXTRA_TASK_KEY = "AddEditTaskActivity.EXTRA_TASK_KEY";
+    private String taskId;
+
+    public static Intent newInstance(String taskId, Context context){
+        Intent intent = new Intent(context, AddEditTaskActivity.class);
+        intent.putExtra(EXTRA_TASK_KEY, taskId);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_task);
         unbinder = ButterKnife.bind(this);
+
+        taskId = getIntent().getStringExtra(EXTRA_TASK_KEY);
         configToolBar();
-        AddTaskFragment addTaskFragment = AddTaskFragment.newInstance();
+        AddTaskFragment addTaskFragment = AddTaskFragment.newInstance(taskId);
         ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),addTaskFragment,
                 R.id.fragment_container);
-        new AddEditTaskPresenter(addTaskFragment);
+        new AddEditTaskPresenter(addTaskFragment, taskId);
     }
 
     /**
